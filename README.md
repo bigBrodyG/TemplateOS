@@ -6,11 +6,11 @@ Ambiente pronto all'uso per laboratori di cybersecurity e penetration testing ba
 1. Crea un nuovo repository e copia questa struttura.
 2. Esegui `git add` / `git commit` dei file del template.
 3. Apri **Code → Codespaces → Create codespace on main**.
-4. Attendi la fine del workflow `.devcontainer/setup.sh` che prova l'installazione avanzata e, se fallisce, richiama il fallback (15‑20 minuti la prima volta).
+4. Attendi la fine del workflow `.devcontainer/setup.sh` che prova l'installazione avanzata, poi il fallback legacy e infine (solo se necessario) lo script originale **CyberSecNatLab** (15‑20 minuti la prima volta, molto di più se scatta l'ultimo fallback).
 
 ## 📦 Contenuto del Template
 - `.devcontainer/devcontainer.json` configura l'immagine base Ubuntu, le GitHub Features (Docker-in-Docker, Python 3.11, Java 23, Ruby, Node LTS, common-utils) e abilita `SYS_PTRACE` / `seccomp=unconfined`.
-- `.devcontainer/setup.sh` esegue prima `.devcontainer/setup-advanced.sh` (logging avanzato, sezioni disattivabili tramite `SKIP_SECTIONS`) e, in caso d'errore, ripiega su `.devcontainer/setup-fallback.sh`.
+- `.devcontainer/setup.sh` esegue prima `.devcontainer/setup-advanced.sh` (logging avanzato, sezioni disattivabili tramite `SKIP_SECTIONS`), poi `.devcontainer/setup-fallback.sh` e, come ultima risorsa, `CyberSecNatLab - VM Setup.sh`.
 - `SETUP-GUIDE.md` spiega deployment, prebuild, secrets e personalizzazioni avanzate.
 
 ## 🛠️ Tool Installati
@@ -24,7 +24,8 @@ Ambiente pronto all'uso per laboratori di cybersecurity e penetration testing ba
 - Rimuovi o aggiungi tool modificando `.devcontainer/setup.sh`.
 - Aggiungi estensioni VS Code aggiornando `customizations.vscode.extensions` nel devcontainer.
 - `SKIP_SECTIONS="john ghidra" bash .devcontainer/setup-advanced.sh` per saltare installazioni pesanti.
-- `bash .devcontainer/setup-fallback.sh` per forzare il vecchio flusso in caso di necessità.
+- `bash .devcontainer/setup-fallback.sh` per forzare il flusso legacy.
+- `bash "CyberSecNatLab - VM Setup.sh"` per riprodurre il setup originale completo (include tool pesanti come SageMath e Burp Suite; usa solo se strettamente necessario).
 - Modifica porte inoltrate (`forwardPorts`) per le tue applicazioni.
 - Usa GitHub Codespaces **prebuilds** o un Dockerfile personalizzato per ridurre i tempi di bootstrap (vedi `SETUP-GUIDE.md`).
 

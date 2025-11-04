@@ -5,7 +5,7 @@
 your-repo/
 ├── .devcontainer/
 │   ├── devcontainer.json
-│   ├── setup.sh              # orchestrator (advanced + fallback)
+│   ├── setup.sh              # orchestrator (advanced + fallback + CyberSecNatLab)
 │   ├── setup-advanced.sh     # main workflow
 │   └── setup-fallback.sh     # legacy script
 ├── README.md
@@ -27,9 +27,10 @@ your-repo/
 - `postCreateCommand`: esegue `.devcontainer/setup.sh` (advanced con fallback).
 
 ## 4. Script di Setup
-- `setup.sh`: orchestratore; prova il workflow avanzato e, se termina con errore, richiama automaticamente il fallback e propaga l'esito.
+- `setup.sh`: orchestratore; prova il workflow avanzato, poi il fallback legacy e, in caso di ulteriore errore, esegue lo script originale **CyberSecNatLab - VM Setup.sh**.
 - `setup-advanced.sh`: installa pacchetti apt (curl, nmap, binwalk, gdb, patchelf, aria2, ecc.), pip user packages (`pwntools`, `ropper`, `pycryptodome`, `capstone`, `scapy`, ...), gem Ruby (`one_gadget`, `seccomp-tools`) e tool scaricati (ngrok, Stegsolve, John The Ripper bleeding-jumbo, Postman, pwndbg, Ghidra). Supporta `SKIP_SECTIONS="john ghidra"` per saltare installazioni pesanti.
-- `setup-fallback.sh`: equivalente allo script originale lineare, usato in caso di problemi con l'advanced o se invocato manualmente.
+- `setup-fallback.sh`: equivalente allo script originale lineare, usato se l'advanced fallisce o se invocato manualmente.
+- `CyberSecNatLab - VM Setup.sh`: script completo legacy (installazione di tool molto pesanti come SageMath, Burp Suite, Docker Desktop); viene richiamato automaticamente solo come terza e ultima opzione.
 - Tutti i tool custom sono salvati in `$HOME/tools`.
 
 ## 5. Personalizzazioni
@@ -49,7 +50,7 @@ Risultato: bootstrap da ~20 minuti a ~2-3 minuti.
 - `SKIP_SECTIONS`: esporta la variabile prima di ricostruire o esegui manualmente `bash .devcontainer/setup-advanced.sh`.
 - Wireshark GUI: usa `tshark` oppure configura X11 forwarding.
 - Docker non parte: controlla `sudo journalctl -u docker` e verifica la feature DinD.
-- Ripeti l'installazione: `bash .devcontainer/setup.sh` per pipeline completa, oppure esegui direttamente advanced/fallback.
+- Ripeti l'installazione: `bash .devcontainer/setup.sh` per pipeline completa, oppure esegui direttamente advanced/fallback/CyberSecNatLab.
 
 ## 8. Verifica Rapida
 Esegui questi comandi nel Codespace dopo il bootstrap:
@@ -70,4 +71,3 @@ ls ${HOME}/tools/ghidra_11.2.1_PUBLIC >/dev/null
 - https://docs.github.com/en/codespaces
 - https://containers.dev/implementors/features/
 - https://github.com/devcontainers/spec
-
