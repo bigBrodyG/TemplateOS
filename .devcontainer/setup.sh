@@ -2,21 +2,38 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ADVANCED="${SCRIPT_DIR}/setup-advanced.sh"
+FIXED_ADVANCED="${SCRIPT_DIR}/setup-fixed_advanced.sh"
+LEGACY_ADVANCED="${SCRIPT_DIR}/setup-legacy_advanced.sh"
 FALLBACK="${SCRIPT_DIR}/setup-fallback.sh"
 CYBER_FALLBACK="${SCRIPT_DIR}/../CyberSecNatLab - VM Setup.sh"
 
 echo "=============================================="
-echo "Executing advanced setup (.devcontainer/setup-advanced.sh)"
+echo "Executing fixed advanced setup (.devcontainer/setup-fixed_advanced.sh)"
 echo "=============================================="
-if bash "${ADVANCED}"; then
-  echo "Advanced setup completed successfully."
+if bash "${FIXED_ADVANCED}"; then
+  echo "Fixed advanced setup completed successfully."
   exit 0
 fi
 
 STATUS=$?
 echo "----------------------------------------------"
-echo "Advanced setup exited with status ${STATUS}."
+echo "Fixed advanced setup exited with status ${STATUS}."
+echo "Attempting legacy advanced script."
+echo "----------------------------------------------"
+
+if [[ -x "${LEGACY_ADVANCED}" ]]; then
+  echo "Running legacy advanced script: ${LEGACY_ADVANCED}"
+  if bash "${LEGACY_ADVANCED}"; then
+    echo "Legacy advanced script completed successfully."
+    exit 0
+  fi
+  STATUS=$?
+  echo "Legacy advanced script exited with status ${STATUS}."
+else
+  echo "Legacy advanced script ${LEGACY_ADVANCED} not found or not executable."
+fi
+
+echo "----------------------------------------------"
 echo "Falling back to legacy setup script."
 echo "----------------------------------------------"
 

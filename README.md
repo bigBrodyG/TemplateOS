@@ -1,49 +1,18 @@
-# TemplateOS CyberSecurity Codespace
+# TemplateOS Minimal Setup
 
-Ambiente pronto all'uso per laboratori di cybersecurity e penetration testing basato su GitHub Codespaces.
+Repo ridotta all'essenziale per partire con un ambiente minimale su Ubuntu / Codespaces senza automazioni complesse.
 
-## 🚀 Quick Start
-1. Crea un nuovo repository e copia questa struttura.
-2. Esegui `git add` / `git commit` dei file del template.
-3. Apri **Code → Codespaces → Create codespace on main**.
-4. Attendi la fine del workflow `.devcontainer/setup.sh` che prova l'installazione avanzata, poi il fallback legacy e infine (solo se necessario) lo script originale **CyberSecNatLab** (15‑20 minuti la prima volta, molto di più se scatta l'ultimo fallback).
-
-## 📦 Contenuto del Template
-- `.devcontainer/devcontainer.json` configura l'immagine base Ubuntu, le GitHub Features (Docker-in-Docker, Python 3.11, Java 23, Ruby, Node LTS, common-utils) e abilita `SYS_PTRACE` / `seccomp=unconfined`.
-- `.devcontainer/setup.sh` esegue prima `.devcontainer/setup-advanced.sh` (logging avanzato, sezioni disattivabili tramite `SKIP_SECTIONS`), poi `.devcontainer/setup-fallback.sh` e, come ultima risorsa, `CyberSecNatLab - VM Setup.sh`.
-- `SETUP-GUIDE.md` spiega deployment, prebuild, secrets e personalizzazioni avanzate.
-
-## 🛠️ Tool Installati
-- **Network**: tshark, Wireshark (CLI), nmap.
-- **Reverse Engineering**: Ghidra, pwndbg, binwalk, ltrace, patchelf.
-- **Password Cracking**: John The Ripper jumbo build.
-- **Steganografia & Utility**: Stegsolve, GIMP, HT editor.
-- **Dev Tooling**: Docker CLI (via feature DinD), Postman, ngrok, Python packages (`pwntools`, `ropper`, `pycryptodome`, `capstone`), Ruby gems (`one_gadget`, `seccomp-tools`).
-
-## ⚙️ Personalizzazione
-- Rimuovi o aggiungi tool modificando `.devcontainer/setup.sh`.
-- Aggiungi estensioni VS Code aggiornando `customizations.vscode.extensions` nel devcontainer.
-- `SKIP_SECTIONS="john ghidra" bash .devcontainer/setup-advanced.sh` per saltare installazioni pesanti.
-- `bash .devcontainer/setup-fallback.sh` per forzare il flusso legacy.
-- `bash "CyberSecNatLab - VM Setup.sh"` per riprodurre il setup originale completo (include tool pesanti come SageMath e Burp Suite; usa solo se strettamente necessario).
-- Modifica porte inoltrate (`forwardPorts`) per le tue applicazioni.
-- Usa GitHub Codespaces **prebuilds** o un Dockerfile personalizzato per ridurre i tempi di bootstrap (vedi `SETUP-GUIDE.md`).
-
-## ❗ Note Importanti
-- Lo script è idempotente: controlla directory di destinazione prima di scaricare/clonare.
-- Alcuni tool (es. Wireshark GUI, Ghidra) richiedono forwarding X11 o uso via CLI.
-- L'esecuzione di `apt upgrade` può richiedere diversi minuti e occupare banda.
-- Per velocizzare ulteriormente, commenta le sezioni dei tool che non ti servono.
-
-## 🧪 Verifica Rapida
-All'avvio del Codespace, controlla:
+## ✅ Setup Minimo (eseguire nel container)
 ```bash
-which python3
-ghidraRun                # deve essere disponibile in $HOME/tools
-~/.local/bin/pwntools-shell
+sudo apt update
+sudo apt install -y git curl python3 python3-pip
+python3 -m pip install --user pwntools
 ```
-Se uno strumento manca, rileggi i log di `.devcontainer/setup.sh` alla fine della build.
+Personalizza liberamente aggiungendo solo gli strumenti che ti servono.
 
-## 📚 Riferimenti
-- Documentazione devcontainer: https://containers.dev/
-- Guida GitHub Codespaces: https://docs.github.com/en/codespaces
+## ➕ Vuoi la versione completa?
+Fammi sapere e ti preparo il pacchetto “full” con tutti i tool di cybersecurity, scripting avanzato e fallback multipli.
+
+## ℹ️ Note
+- Questo repository conserva solo il README per restare leggero.
+- Aggiungi i tuoi script e configurazioni a partire da qui, oppure chiedi la versione completa.
