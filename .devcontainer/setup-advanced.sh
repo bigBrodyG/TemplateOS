@@ -47,6 +47,23 @@ update_system() {
   sudo_noninteractive apt-get autoremove -y
 }
 
+ensure_system_helpers() {
+  section_enabled "system-helpers" || return 0
+  log "Ensuring auxiliary system helpers (dbus, polkit)..."
+
+  if [[ ! -e /usr/libexec/polkitd && -x /usr/lib/polkit-1/polkitd ]]; then
+    sudo mkdir -p /usr/libexec
+    sudo ln -sf /usr/lib/polkit-1/polkitd /usr/libexec/polkitd
+  fi
+
+  sudo mkdir -p /run/dbus
+  if ! pgrep -f "dbus-daemon --system" >/dev/null 2>&1; then
+    if ! sudo dbus-daemon --system --fork; then
+      warn "Unable to launch system dbus daemon; continuing without it."
+    fi
+  fi
+}
+
 install_apt_packages() {
   section_enabled "apt-packages" || return 0
   log "Installing base packages via apt..."
@@ -179,6 +196,7 @@ main() {
   log "Starting advanced cybersecurity tooling setup..."
   update_system
   install_apt_packages
+  ensure_system_helpers
   install_python_packages
   install_ruby_gems
   install_ngrok
