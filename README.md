@@ -11,9 +11,6 @@ Repo ridotta all'essenziale per bootstrap espresso (minimal script) su Ubuntu / 
 
 Una volta completato il bootstrap, aggiungi liberamente solo gli strumenti di cui hai bisogno.
 
-## ➕ Vuoi la versione completa?
-Fammi sapere e ti preparo il pacchetto “full” con tutti i tool di cybersecurity, scripting avanzato e fallback multipli.
-
 ## ℹ️ Note
 - Dopo l'esecuzione di `minimal.sh` resterà soltanto `README.md`.
 - Aggiungi i tuoi script e configurazioni a partire da qui, oppure chiedi la versione completa.
